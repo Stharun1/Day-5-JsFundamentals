@@ -233,7 +233,7 @@ let selectedTrain = {
   name: "Charminar Express",
   departure: "18:25",
   arrival: "23:55",
-  duration: "5 hours 30 minutes",
+  duration: "5 hours 30 min",
   chosenClass: "3AC",
   baseFarePerPassenger: 710,
 };
