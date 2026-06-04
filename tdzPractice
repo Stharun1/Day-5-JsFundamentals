@@ -1,0 +1,68 @@
+// ==========================================
+// ASSIGNMENT 3: SCOPE PRACTICE
+// ==========================================
+
+// Q16. Global Scope Access
+
+const APP_NAME = "IRCTC"; // Global constant accessible everywhere in the file
+
+function showApp() {
+  console.log(APP_NAME); // Looks out to global scope
+}
+
+showApp(); // Output: IRCTC
+console.log(APP_NAME); // Output: IRCTC
+
+// Q17. Function Scope Leak Attempt
+function calculate() {
+  let fare = 1250;
+}
+
+calculate();
+console.log(fare);
+//  Output: ReferenceError: fare is not defined
+//  Reason: 'fare' is inside the local scope of calculate() and is destroyed when the function finishes.
+
+// Q18. Block Scope vs var
+function bookTicket() {
+  if (true) {
+    let trainName = "Kacheguda";
+    var fare = 1250;
+  }
+  console.log(fare); // Output: 1250 (var ignores if-block, leaks to function scope)
+  console.log(trainName);
+  // Output: ReferenceError: trainName is not defined
+  // Reason: 'let' respects the if-block scope and cannot be accessed outside of it.
+}
+
+bookTicket();
+
+// Q19. For-loop Block Scope
+for (let i = 0; i < 3; i++) {
+  let count = i + 1;
+  console.log("Train " + count);
+  // Output:
+  // Train 1
+  // Train 2
+  // Train 3
+}
+
+console.log(i); //  Output: ReferenceError: i is not defined
+console.log(count); //  Output: ReferenceError: count is not defined
+// Reason: Both 'i' and 'count' use 'let',as strictly accessed from inside the loop block.
+
+//Q20. Global Modification vs Local Lookup
+let totalSeats = 100;
+
+function bookSeats() {
+  let bookedSeats = 25;
+  totalSeats = totalSeats - bookedSeats; // Modifies the global totalSeats variable
+  console.log(totalSeats); // Output: 75
+}
+
+bookSeats();
+console.log(totalSeats); // Output: 75 (reflects the updated global value)
+
+console.log(bookedSeats);
+// Output: ReferenceError: bookedSeats is not defined
+//  Reason: 'bookedSeats' belongs strictly to the local function scope of bookSeats().

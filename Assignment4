@@ -1,0 +1,72 @@
+// ==========================================
+// ASSIGNMENT 4: BEGINNER IRCTC LOGIN FLOW
+// ==========================================
+
+// TASK 1 — Setup Globals
+const VALID_USERNAME = "rajesh_kumar";
+const VALID_PASSWORD = "secret@123";
+const MAX_ATTEMPTS = 3;
+
+let loginAttempts;
+let isLoggedIn ;
+
+function resetLoginState() {
+    loginAttempts = 0;
+    isLoggedIn = false;
+}
+
+// TASK 2 — Create validateLogin Function
+function validateLogin(inputUser, inputPass) {
+    // Trimming inputs locally inside function scope
+    let userTrimmed = inputUser.trim();
+    let passTrimmed = inputPass.trim();
+
+    // Checking if the account is already locked first
+    if (loginAttempts >= MAX_ATTEMPTS) {
+        let errorMsg = "Account locked!"; // Block-scoped message
+        return errorMsg;
+    }
+
+    // Checking credentials
+    if (userTrimmed === VALID_USERNAME && passTrimmed === VALID_PASSWORD) {
+        let successMsg = "Login successful!"; // Block-scoped message
+        isLoggedIn = true;
+        currentUser = userTrimmed;
+        loginAttempts = 0; // Resetting attempts on successful login
+        return successMsg;
+    } else {
+        let failMsg = "Invalid credentials!"; // Block-scoped message
+        loginAttempts = loginAttempts + 1; // Incrementing counter
+        return failMsg;
+    }
+}
+
+// TASK 3 — Running Tests (Line-by-Line Beginner Chain)
+
+function runTests(TestNumber,username,password) {
+    console.log(`Running Test ${TestNumber}`);
+    // Expecting: "Login successful!"
+    let result = validateLogin(username, password);
+    console.log(result); 
+    console.log("isLoggedIn state:", isLoggedIn);
+    console.log("loginAttempts state:", loginAttempts);
+}
+
+runTests(1, "rajesh_kumar   ", "  secret@123");
+
+console.log("\n"); // Should print "rajesh_kumar"
+
+// First, let's manually reset state variables so Test 2 runs fresh
+resetLoginState();
+runTests(2, "rajesh_kumar", "secret");
+console.log("\n");
+
+resetLoginState();
+
+console.log(runTests(1,"rajesh_kumar", "secret@"),"\n"); // attempt 1 (returns Invalid credentials!)
+console.log(runTests(2,"rajesh_kumar", "secret2"),"\n"); // attempt 2 (returns Invalid credentials!)
+console.log(runTests(3,"rajesh_kumar", "secret!3"),"\n"); // attempt 3 (returns Invalid credentials!)
+
+// 4th Attempt: The gatekeeper block should kick in here
+console.log(runTests(4,"rajesh_kumar", "secret@123"),"\n"); // Expecting: "Account locked!"
+console.log("Final loginAttempts counter:", loginAttempts,"is Exceeded as MAX_ATTEMPTS is only", MAX_ATTEMPTS); // Prints 3
